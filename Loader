@@ -1,0 +1,35 @@
+--[[
+    Memer Version 0.0.1 (Beta) Loader
+    There might be bugs so be aware.
+    MORE GAMES COMING SOON! WORKING ON BYPASSES!
+--]]
+
+function getCodefromURL(url)
+   return game:HttpGet(url)
+end
+
+function isSupportedScript(Id)
+   if (type(Id) ~= "string") then Id = tostring(Id) end
+   local suc,err = pcall(function()
+       local Code = game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/SupportedGames.md/"..Id)
+   end)
+   return suc
+end
+
+function loadScript(Id)
+   if (type(Id) ~= "string") then Id = tostring(Id) end
+   if (isSupportedScript(Id) == false) then return loadstring(game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/SupportedGames.md/uni")() end
+   return loadstring(game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/SupportedGames.md/"..Id))()
+end
+
+function getGame()
+   local v = game.PlaceId or game.Id or game.GameId or game.IdForGame;
+   v = tostring(v)
+   if (v ~= nil then)
+      return v
+   elseif (v == nil then)
+      return ("ERROR; game does not exist")
+   end
+end
+
+loadScript(getGame()) -- loadScript(<number>)
