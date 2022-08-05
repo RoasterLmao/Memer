@@ -5,7 +5,17 @@
     After released, version will be 1.0.0.
 --]]
 
+if game:IsLoaded() == false then
+	repeat wait() until game:IsLoaded() == true
+end
+
 local qot = syn and syn.queue_on_teleport or queue_on_teleport or fluxus and fluxus.queue_on_teleport or function() end
+
+if getgenv == nil then
+	game.Players.LocalPlayer:Kick("Your exploit does not support getgenv(), please try getting another one.")
+end
+
+getgenv().plr = game.Players.LocalPlayer
 
 if qot == nil then
 	game.Players.LocalPlayer:Kick("queue_on_teleport does not work on your executor, please get a better executor.\nFREE: Krnl, Fluxus, Comet\nPAID: Synapse X, or others")
