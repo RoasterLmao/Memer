@@ -1,7 +1,8 @@
 --[[
-    Memer Version 0.0.1 (Beta) Loader
+    Memer Version 0.0.2 (Beta) Loader
     There might be bugs so be aware.
     MORE GAMES COMING SOON! WORKING ON BYPASSES!
+    After released, version will be 1.0.0.
 --]]
 
 game.Players.LocalPlayer.OnTeleport:Connect(function(tpState)
@@ -32,7 +33,7 @@ function getGame()
    local v = game.PlaceId or game.Id or game.GameId or game.IdForGame;
    v = tostring(v)
    if (v ~= nil then)
-      return v
+      return tonumber(v) -- 
    elseif (v == nil then)
       return ("ERROR; game does not exist")
    end
