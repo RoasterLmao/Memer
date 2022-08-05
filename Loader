@@ -5,9 +5,16 @@
     After released, version will be 1.0.0.
 --]]
 
+local qot = syn and syn.queue_on_teleport or queue_on_teleport or fluxus and fluxus.queue_on_teleport or function() end
+
+if qot == nil then
+	game.Players.LocalPlayer:Kick("queue_on_teleport does not work on your executor, please get a better executor.\nFREE: Krnl, Fluxus, Comet\nPAID: Synapse X, or others")
+	return error("queue_on_teleport does not work on your executor, please get a better executor.\nFREE: Krnl, Fluxus, Comet\nPAID: Synapse X, or others")
+end
+
 game.Players.LocalPlayer.OnTeleport:Connect(function(tpState)
 	if tpState == Enum.TeleportState.Started then
-		queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/Loader"))()') -- Load script on Teleport
+		qot('loadstring(game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/Loader"))()') -- Load script on Teleport
 	end
 end)
 
