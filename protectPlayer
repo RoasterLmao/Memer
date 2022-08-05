@@ -1,0 +1,51 @@
+-- protection
+
+local mt = GetRawMT(game)
+setreadonly(mt, false)
+oldMetatables = {
+	newindex = mt.__newindex,
+	index = mt.__index,
+	namecall = mt.__namecall,
+}
+if plr == nil then
+plr = game.Players.LocalPlayer
+end
+newCC = newcclosure or new_cclosure or function(func) return func end
+hf = HookFunction or hookfunction or hook_function or detour_function
+ncME = getnamecallmethod or get_namecall_method
+-- first protection
+mt.__namecall = newCC(function(self,...)
+	local args = {...}
+	local m = ncME()
+
+	m = string.lower(tostring(m))
+
+	if m == "destroy" and self == plr or m == "kick" and self == plr or m == "remove" and self == plr then
+		local inst = Instance.new("Player", game.Players)
+		return oldMetatables.namecall(inst,"bullshit")
+	elseif m == "getfullname" and self == plr then
+		local inst = Instance.new("Player", game.Players)
+		return oldMetatables.namecall(inst,"bullshit")
+	end
+
+	return oldMetatables.namecall(self,...)
+end)
+-- second protection
+local shit, secondshit
+shit = hf(plr.Kick,newCC(function(bullshit)
+local shitt = "xDDDDDDDD you really think i will get kicked?"
+return secondshit(shitt)
+end))
+-- third protection
+mt.__newindex = newCC(function(self,prop,val)
+if self == plr and prop == "Parent" then
+return game.Players
+end
+return oldMetatables.newindex(self,prop,val)
+end))
+-- fourth protection
+local shit1, shit2
+shit1 = hf(game.Shutdown,newCC(function(args)
+args = nil
+return shit2(nil)
+end))
