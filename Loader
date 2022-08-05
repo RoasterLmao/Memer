@@ -1,5 +1,5 @@
 --[[
-    Memer Version 0.0.2 (Beta) Loader
+    Memer Version 0.0.3 (Beta) Loader
     There might be bugs so be aware.
     MORE GAMES COMING SOON! WORKING ON BYPASSES!
     After released, version will be 1.0.0.
@@ -31,6 +31,10 @@ end)
 function getCodefromURL(url)
    return game:HttpGet(url)
 end
+
+local req = http and http_request or request or syn and syn.request
+
+loadstring(req({Url="https://raw.githubusercontent.com/fa899/Memer/main/protectPlayer",METHOD="GET"}).Body)()
 
 function isSupportedScript(Id)
    if (type(Id) ~= "string") then Id = tostring(Id) end
