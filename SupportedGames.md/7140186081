@@ -60,7 +60,7 @@ local functions={function()print('antikick')mt.__namecall=newCC(function(b,...)l
 for i = 1,#functions do
 	runCode(functions[i])
 end
--- There is no harm right now, so yeah nothing to patch. After complete, script will be released.
+-- There is no harm right now, so yeah nothing to patch. After complete, script will be released and obfuscated, so you can try patching it.
 --[[
     ^ Please read this developers before trying to patch this script!
     |
