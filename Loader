@@ -45,17 +45,21 @@ function isSupportedScript(Id)
 end
 
 function loadScript(Id)
-   if (type(Id) ~= "string") then Id = tostring(Id) end
-   if (isSupportedScript(Id) == false) then return loadstring(game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/SupportedGames.md/uni")() end
+   if (type(Id) ~= "string") then
+   	Id = tostring(Id) 
+   end
+   if (isSupportedScript(Id) == false) then
+   	return loadstring(game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/SupportedGames.md/uni")()
+   end
    return loadstring(game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/SupportedGames.md/"..Id))()
 end
 
 function getGame()
    local v = game.PlaceId or game.Id or game.GameId or game.IdForGame;
    v = tostring(v)
-   if (v ~= nil then)
+   if (v ~= nil) then
       return tonumber(v) -- 
-   elseif (v == nil then)
+   elseif (v == nil) then
       return ("ERROR; game does not exist")
    end
 end
