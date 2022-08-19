@@ -1,5 +1,5 @@
 -- protection
-
+local GetRawMT = get_raw_metatable or getrawmetatable
 local mt = GetRawMT(game)
 setreadonly(mt, false)
 oldMetatables = {
