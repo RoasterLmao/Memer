@@ -19,7 +19,7 @@ getgenv().plr = game.Players.LocalPlayer
 
 if qot == nil then
 	game.Players.LocalPlayer:Kick("queue_on_teleport does not work on your executor, please get a better executor.\nFREE: Krnl, Fluxus, Comet\nPAID: Synapse X, or others")
-	return error("queue_on_teleport does not work on your executor, please get a better executor.\nFREE: Krnl, Fluxus, Comet\nPAID: Synapse X, or others")
+	--return error("queue_on_teleport does not work on your executor, please get a better executor.\nFREE: Krnl, Fluxus, Comet\nPAID: Synapse X, or others")
 end
 
 game.Players.LocalPlayer.OnTeleport:Connect(function(tpState)
@@ -29,7 +29,7 @@ game.Players.LocalPlayer.OnTeleport:Connect(function(tpState)
 end)
 
 function getCodefromURL(url)
-   return game:HttpGet(url)
+	return game:HttpGet(url)
 end
 
 local req = http and http_request or request or syn and syn.request
@@ -37,31 +37,33 @@ local req = http and http_request or request or syn and syn.request
 loadstring(req({Url="https://raw.githubusercontent.com/fa899/Memer/main/protectPlayer",METHOD="GET"}).Body or game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/protectPlayer"))()
 
 function isSupportedScript(Id)
-   if (type(Id) ~= "string") then Id = tostring(Id) end
-   local suc,err = pcall(function()
-       local Code = game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/SupportedGames.md/"..Id)
-   end)
-   return suc
+	if (type(Id) ~= "string") then Id = tostring(Id) end
+	local suc,err = pcall(function()
+		local Code = game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/SupportedGames.md/"..Id)
+	end)
+	return suc
 end
 
 function loadScript(Id)
-   if (type(Id) ~= "string") then
-   	Id = tostring(Id) 
-   end
-   if (isSupportedScript(Id) == false) then
-   	return loadstring(game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/SupportedGames.md/uni")()
-   end
-   return loadstring(game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/SupportedGames.md/"..Id))()
+	if type(Id) ~= "string" then
+		Id = tostring(Id) 
+	end
+	
+	if isSupportedScript(Id) == false then
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/SupportedGames.md/uni"))()
+	end
+	
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/SupportedGames.md/"..Id))()
 end
 
 function getGame()
-   local v = game.PlaceId or game.Id or game.GameId or game.IdForGame;
-   v = tostring(v)
-   if (v ~= nil) then
-      return tonumber(v) -- 
-   elseif (v == nil) then
-      return ("ERROR; game does not exist")
-   end
+	local v = game.PlaceId or game.Id or game.GameId or game.IdForGame;
+	v = tostring(v)
+	if (v ~= nil) then
+		return tonumber(v) -- 
+	elseif (v == nil) then
+		return ("ERROR; game does not exist")
+	end
 end
 
 loadScript(getGame()) -- loadScript(<number>)
