@@ -35,6 +35,7 @@ end
 local req = http and http_request or request or syn and syn.request
 
 loadstring(req({Url="https://raw.githubusercontent.com/fa899/Memer/main/protectPlayer",METHOD="GET"}).Body or game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/protectPlayer"))()
+loadstring(req({Url="https://raw.githubusercontent.com/fa899/Memer/main/Custom%20gethui.lua",METHOD="GET"}).Body or game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/Custom%20gethui.lua"))()
 
 function isSupportedScript(Id)
 	if (type(Id) ~= "string") then Id = tostring(Id) end
@@ -48,12 +49,8 @@ function loadScript(Id)
 	if type(Id) ~= "string" then
 		Id = tostring(Id) 
 	end
-	
-	if isSupportedScript(Id) == false then
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/SupportedGames.md/uni"))()
-	end
-	
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/SupportedGames.md/"..Id))()
+
+	return loadstring(game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/SupportedGames.md/"..Id or "uni"))()
 end
 
 function getGame()
