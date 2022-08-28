@@ -26,7 +26,7 @@ end
 local Configurations = filesys.readfile("memer/universal.json")
 
 game:GetService("RunService").Stepped:Connect(function()
-	filesys.writefile("game:GetService("HttpService"):JSONEncode(DefaultSettings))
+	filesys.writefile("memer/universal.json", game:GetService("HttpService"):JSONEncode(DefaultSettings))
 end)
 
 function getConfigs()
