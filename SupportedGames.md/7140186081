@@ -1,68 +1,31 @@
--- because p2w, campers and some dumbass clowns
-warn(".")
-local Memer = {
+local DefaultSettings = {
 	["Combat"] = {
 
 	},
 	["Movement"] = {
 	},
 	["Misc"] = {
-		
+
 	}
 }
 
-if plr == nil then
-	plr = game.Players.LocalPlayer
-end
-
-function runCode(func)
-	return pcall(func)
-end
-
-function runCodes(functions)
-	for i = 1, #functions do
-		runCode(functions[i])
-	end
-end
-
-local oldtable = table
-
-local function table(action,_table,value)
-	action = string.lower(action)
-	if action == "remove" then
-		return oldtable.remove(_table,oldtable.find(_table,value))
-	elseif action == "find" then
-		return oldtable.find(_table,value)
-	elseif action == "insert" then
-		return oldtable.insert(_table,value)
-	end
-end
-
-local GetRawMT = get_raw_metatable or getrawmetatable or getraw_metatable;
-
-local mt = GetRawMT(game)
-
-setreadonly(mt, false)
-
-oldMetatables = {
-	newindex = mt.__newindex,
-	index = mt.__index,
-	namecall = mt.__namecall,
+local filesys = {
+	isfile = isfile or is_file or syn.isfile or syn.is_file,
+	readfile = readfile or read_file or syn.readfile or syn.read_file,
+	writefile = writefile or write_file or syn.write_file or syn.writefile,
+	makefolder = makefolder or make_folder or syn.make_folder or syn.makefolder,
 }
 
-newCC = newcclosure or new_cclosure or function(func) return func end
-hf = HookFunction or hookfunction or hook_function or detour_function
-ncME = getnamecallmethod or get_namecall_method
-
-local functions={function()print('antikick')mt.__namecall=newCC(function(b,...)local c={...}local c=ncME()c=string.lower(tostring(c))if c=="destroy"and b==plr or c=="kick"and b==plr or c=="remove"and b==plr then return oldMetatables.namecall(nil,2)elseif c=="getfullname"and b==plr then return oldMetatables.namecall(nil,2)end;return oldMetatables.namecall(b,...)end)end,function()print('antislow')mt.__newindex=newCC(function(b,c,d)if b==plr.Character:FindFirstChildWhichIsA("Humanoid")and c=="WalkSpeed"and Memer.Movement.AntiSlow==true then return 16 end;return oldMetatables.newindex(b,c,d)end)end}
-
--- Bypasses, AntiSlow
-for i = 1,#functions do
-	runCode(functions[i])
+if not filesys.isfile("Memer/"..tostring(game.PlaceId)) then
+	filesys.makefolder("memer")
 end
--- There is no harm right now, so yeah nothing to patch. After complete, script will be released and obfuscated, so you can try patching it.
---[[
-    ^ Please read this developers before trying to patch this script!
-    |
-    |
---]]
+
+local Configurations = filesys.readfile("memer/"..tostring(game.PlaceId))
+
+game:GetService("RunService").Stepped:Connect(function()
+	filesys.writefile(game:GetService("HttpService"):JSONEncode(DefaultSettings))
+end)
+
+function getConfigs()
+	return game:GetService("HttpService"):JSONDecode(filesys.readfile("memer/"..tostring(game.PlaceId)))
+end
