@@ -14,18 +14,19 @@ local filesys = {
 	readfile = readfile or read_file or syn.readfile or syn.read_file,
 	writefile = writefile or write_file or syn.write_file or syn.writefile,
 	makefolder = makefolder or make_folder or syn.make_folder or syn.makefolder,
+  	isfolder = isfolder or is_folder or syn.is_folder or syn.isfolder
 }
 
-if not filesys.isfile("Memer/"..tostring(game.PlaceId)) then
+if not filesys.isfolder("memer") then
 	filesys.makefolder("memer")
 end
 
-local Configurations = filesys.readfile("memer/"..tostring(game.PlaceId))
+local Configurations = filesys.readfile("memer/universal.json")
 
 game:GetService("RunService").Stepped:Connect(function()
-	filesys.writefile(game:GetService("HttpService"):JSONEncode(DefaultSettings))
+	filesys.writefile("memer/universal.json", game:GetService("HttpService"):JSONEncode(DefaultSettings))
 end)
 
 function getConfigs()
-	return game:GetService("HttpService"):JSONDecode(filesys.readfile("memer/"..tostring(game.PlaceId)))
+	return game:GetService("HttpService"):JSONDecode(filesys.readfile("memer/universal.json"))
 end
