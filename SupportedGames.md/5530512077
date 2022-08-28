@@ -1,13 +1,34 @@
-local Memer = {
+local DefaultSettings = {
 	["Combat"] = {
 
 	},
 	["Movement"] = {
 	},
 	["Misc"] = {
-		
+
 	}
 }
+
+local filesys = {
+	isfile = isfile or is_file or syn.isfile or syn.is_file,
+	readfile = readfile or read_file or syn.readfile or syn.read_file,
+	writefile = writefile or write_file or syn.write_file or syn.writefile,
+	makefolder = makefolder or make_folder or syn.make_folder or syn.makefolder,
+}
+
+if not filesys.isfile("Memer/"..tostring(game.PlaceId)) then
+	filesys.makefolder("memer")
+end
+
+local Configurations = filesys.readfile("memer/"..tostring(game.PlaceId))
+
+game:GetService("RunService").Stepped:Connect(function()
+	filesys.writefile(game:GetService("HttpService"):JSONEncode(DefaultSettings))
+end)
+
+function getConfigs()
+	return game:GetService("HttpService"):JSONDecode(filesys.readfile("memer/"..tostring(game.PlaceId)))
+end
 
 if plr == nil then
 	plr = game.Players.LocalPlayer
