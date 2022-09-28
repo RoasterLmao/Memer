@@ -12,6 +12,7 @@ end
 if makefolder and writefile and isfile then
    makefolder("memerhub")
    makefolder("memerhub/decals")
+   makefolder("memerhub/custommodules")
 else
    messagebox("Your exploit does not support makefolder, writefile and isfile, shutdowned game!", "Not supported exploit!", 1)
    wait()
@@ -72,4 +73,5 @@ function getGame()
 	end
 end
 
+getgenv().GuiLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/fa899/Memer/main/uiLibrary"))()
 loadScript(getGame()) -- loadScript(<number>)
