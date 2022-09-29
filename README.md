@@ -7,8 +7,11 @@ If you do not trust the button above, here is the invite: https://discord.gg/MPV
 ## Translations
 This script has translations (you can see what polish/(other country people) people say in a diff language u understand)
 SUPPORTED LANGUAGES RIGHT NOW:
+
 Polish
+
 German
+
 This script also tells u what people say.
 ## Universal
 This script is for every game too.
