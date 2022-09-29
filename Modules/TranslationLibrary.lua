@@ -1,18 +1,9 @@
---[[
-(READ ME!) This has nothing involved with logging your IP Adress, we do not want to use your IP adress to get it flooded in our discord server. I didn't use https://v4.ident.me/ or anything like that. Nothing was skidded too. G'day!
-LOOKING FOR TRANSLATORS! LANGUAGES: Spain, German, Indonesian, etc.
-ADD ME (discord): zestycodes#4818
-ADD ME (guilded): https://guilded.gg/profile/4orNzGJA
-PRIZE: Memer Hub Premium (COMMANDS FOR NONPREMIUM, MORE FEATURES)
-Translations may not be correct.
-Feel free to use this for your hub.
-]]
 local Country = string.upper(game:GetService("LocalizationService"):GetCountryRegionForPlayerAsync(game.Players.LocalPlayer)) or "EN"
 
 local Words = {
 	["PL"] = {
 		["Welcome"] = "Witaj",
-		["welcome"] = "wit;aj",
+		["welcome"] = "witaj",
 		["Speed"] = "Prędkość",
 		["speed"] = "prędkość",
 		["high"] = "wielki",
@@ -153,17 +144,150 @@ local Words = {
 		["this"] = "ten",
 		["This"] = "Ten",
 	},
-	--[[
-	-- ["EN"] = {}
-	Honestly, EN shouldn't be added because these translations check if the language exists and if it doesn't, this script will return non-translated content.
-	Yes, I am lazy to write it all.
-	]]
+	["DE"]= {
+		["Welcome"] = "Willkommen",
+		["welcome"] = "willkommen",
+		["Speed"] = "Geschwindigkeit",
+		["speed"] = "geschwindigkeit",
+		["high"] = "großartig",
+		["tall"] = "groß",
+		["hack"] = "Haken",
+		["hacker"] = "Hacker",
+		["bully"] = "mobbing",
+		["cry"] = "necken",
+		["friend"] = "weinen",
+		["Friend"] = "Freund",
+		["Bullying"] = "Mobbing",
+		["Bully"] = "Bully",
+		["Tall"] = "Groß",
+		["Punch"] = "Punch",
+		["punch"] = "punsch",
+		["you"] = "du",
+		["You"] = "Du",
+		["are"] = "du bist",
+		["Are"] = "du bist",
+		["they"] = "sie",
+		["They"] = "Sie",
+		["kill"] = "töten",
+		["Kill"] = "Töten",
+		["bro"] = "Bruder",
+		["Bro"] = "Bruder",
+		["cash"] = "Bargeld",
+		["Cash"] = "bargeld",
+		["want"] = "wollen",
+		["Want"] = "Wollen",
+		["shy"] = "schüchtern",
+		["Shy"] = "Schüchtern",
+		["dude"] = "kumpel",
+		["Dude"] = "Kumpel",
+		["i"] = "und",
+		["I"] = "Und",
+		["if"] = "wenn",
+		["If"] = "Wenn",
+		["cool"] = "cool",
+		["Cool"] = "Cool",
+		["Gas"] = "Gas",
+		["gas"] = "gas",
+		["Gun"] = "Waffe",
+		["gun"] = "waffe",
+		["stomp"] = "stampfen",
+		["Stomp"] = "Stampfen",
+		["School"] = "Schule",
+		["school"] = "schule",
+		["Chair"] = "Stuhl",
+		["chair"] = "stuhl",
+		["local"] = "lokal",
+		["Local"] = "Lokal",
+		["best"] = "beste",
+		["Best"] = "Beste",
+		["gaming"] = "gaming",
+		["Gaming"] = "Gaming",
+		["buy"] = "kaufen",
+		["Buy"] = "Kaufen",
+		["teleport"] = "teleportieren",
+		["tp"] = "teleportieren",
+		["Teleport"] = "Teleportieren",
+		["Tp"] = "Teleportieren",
+		["memerhub"] = "memerhub",
+		["MemerHub"] = "MemerHub",
+		["MEMERHUB"] = "MEMERHUB",
+		["top"] = "oben",
+		["Top"] = "Oben",
+		["gay"] = "schwul",
+		["Gay"] = "Schwul",
+		["Gey"] = "Schwul",
+		["gey"] = "schwul",
+		["Bed"] = "Bett",
+		["bed"] = "bett",
+		["Script"] = "Skript",
+		["script"] = "skript",
+		["love"] = "liebe",
+		["Love"] = "Liebe",
+		["LOVE"] = "LIEBE",
+		["bet"] = "wette",
+		["Bet"] = "Wette",
+		["Mask"] = "Maske",
+		["mask"] = "maske",
+		["essen"] = "essen",
+		["Essen"] = "Essen",
+		["santa"] = "weihnachtsmann",
+		["Santa"] = "Weihnachtsmann",
+		["Haus"] = "Haus",
+		["haus"] = "haus",
+		["schön"] = "geliebt",
+		["Lovely"] = "Geliebte",
+		["hier"] = "hier",
+		["Hier"] = "Hier",
+		["Zeichen"] = "Zeichen",
+		["zeichen"] = "zeichen",
+		["Frau"] = "Mädchen",
+		["frau"] = "mädchen",
+		["Frauen"] = "Mädchen",
+		["frauen"] = "mädchen",
+		["Mädchen"] = "Mädchen",
+		["Mann"] = "Bauer",
+		["mann"] = "bauer",
+		["Junge"] = "Junge",
+		["junge"] = "junge",
+		["gut"] = "gut",
+		["Gut"] = "Gut",
+		["süß"] = "geliebt",
+		["Süß"] = "Geliebt",
+		["russland"] = "russland",
+		["Russland"] = "Russland",
+		["Polen"] = "Polen",
+		["polen"] = "ppolen",
+		["Ukraine"] = "Ukraine",
+		["ukraine"] = "ukraine",
+		["China"] = "China",
+		["china"] = "China",
+		["Shield"] = "Schild",
+		["shield"] = "schild",
+		["map"] = "Karte",
+		["Map"] = "Karte",
+		["for"] = "für",
+		["For"] = "Für",
+		["sitzen"] = "sitzen",
+		["Sitzen"] = "sitzen",
+		["$"] = "Euro",
+		["stampfen"] = "schmelzen",
+		["Menschen"] = "Menschen",
+		["menschen"] = "menschen",
+		["ist"] = "ist",
+		["Ist"] = "Ist",
+		["greifen"] = "nehmen",
+		["Greifen"] = "Greifen",
+		["ich"] = "ich",
+		["Ich"] = "Ich",
+		["dies"] = "dies",
+		["Dies"] = "Zehn",
+	}
 }
 
 Words["Translate"] = function(message)
 	local result = nil
 	local success = false
-	
+
 	if Words[Country] then
 		for toTranslate, Result in pairs(Words[Country]) do
 			if message:find(toTranslate) then
@@ -174,7 +298,26 @@ Words["Translate"] = function(message)
 	else
 		result = message
 	end
-	
+
 	return result, success
 end
+
+Words["TranslateBack"] = function(message)
+	local result = nil
+	local success = false
+
+	if Words[Country] then
+		for Result, toTranslate in pairs(Words[Country]) do
+			if message:find(toTranslate) then
+				message = string.gsub(message, toTranslate, Result)
+			end
+		end
+		result = message
+	else
+		result = message
+	end
+
+	return result, success
+end
+
 return Words
