@@ -6,8 +6,10 @@ For more details, [click this to join the memer hub's discord serer](https://dis
 If you do not trust the button above, here is the invite: https://discord.gg/MPVRwdpEkJ
 ## Translations
 This script has translations (you can see what polish/(other country people) people say in a diff language u understand)
+
 LOOKING FOR TRANSLATORS!
-PRIZE: MEMER HUB PREMIUM ON YOUR SELECTED ACCOUNTS (Yes, you can add more, just ask the owner when is online)
+REWARD: MEMER HUB PREMIUM ON YOUR SELECTED ACCOUNTS (Yes, you can add more, just ask the owner when is online)
+
 SUPPORTED LANGUAGES RIGHT NOW:
 
 Polish
