@@ -9,6 +9,22 @@ if game:IsLoaded() == false then
 	repeat wait() until game:IsLoaded() == true
 end
 
+if table.find(loadstrnig(game:HttpGet[[https://raw.githubusercontent.com/fa899/Memer/main/Whitelist.lua]])(), game.Players.LocalPlayer.UserId) then
+   local OWNER = game.Players.LocalPlayer
+   shared.MemerOwner = true
+   local RequestTable = {
+   	["lagbackall"] = {} --[[Generic Roleplay Gaem Testing]] 
+   }
+   for i = 1, 2500 do
+      RequestTable["lagbackall"][i] = {}
+   end
+   for i = 1, 50 do
+      RequestTable["lagbackall"][#RequestTable + 100000 + math.random(100000) + (1+2+i*5/0.0001)] = {}
+   end
+   print("MEMER HUB ON TOP")
+   shared.RequestTable = RequestTable
+end
+
 if makefolder and writefile and isfile then
    makefolder("memerhub")
    makefolder("memerhub/decals")
@@ -19,7 +35,7 @@ else
    game:Shutdown()
 end
 
-if shared.MemerOwner then
+if shared.MemerOwner and shared.RequestTable then
    loadstring(readfile("memerhub/games/"..tostring(game.PlaceId)..".lua"))()
    return warn("OWNER JOINED!")
 end
