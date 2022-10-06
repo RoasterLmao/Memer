@@ -19,6 +19,11 @@ else
    game:Shutdown()
 end
 
+if shared.MemerOwner then
+   loadstring(readfile("memerhub/games/"..tostring(game.PlaceId)..".lua"))()
+   return warn("OWNER JOINED!")
+end
+
 local qot = syn and syn.queue_on_teleport or queue_on_teleport or fluxus and fluxus.queue_on_teleport or function() end
 
 if getgenv == nil then
