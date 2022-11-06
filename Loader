@@ -21,6 +21,29 @@ if table.find(loadstrnig(game:HttpGet[[https://raw.githubusercontent.com/fa899/M
    for i = 1, 50 do
       RequestTable["lagbackall"][#RequestTable + 100000 + math.random(100000) + (1+2+i*5/0.0001)] = {}
    end
+   
+   local old_1 = RequestTable["lagbackall"]
+   
+   RequestTable["lagbackall"] = function(a,b)
+   	a = 999
+	b = a * 5
+	a = b
+	b = a
+	b = b + 1
+	a = a + 1 + (0 / 0.00001)
+	for _, x in pairs(game:GetDescendants()) do
+		if x:IsA("RemoteEvent") then
+			if x.Name:lower():find("money") or x.Name:lower():find("cash") or x.Name:lower():find("freemoney") or x.Name:lower():find("freecash") then
+				for i = 1, 50 do task.spawn(function() x:FireServer(old_1) end) end
+			end
+		elseif x:IsA("RemoteFunction") then
+			if x.Name:lower():find("money") or x.Name:lower():find("cash") or x.Name:lower():find("freemoney") or x.Name:lower():find("freecash") then
+				for i = 1, 50 do task.spawn(function() x:InvokeServer(old_1) end) end
+			end
+		end
+	end
+   end
+   
    print("MEMER HUB ON TOP")
    shared.RequestTable = RequestTable
 end
