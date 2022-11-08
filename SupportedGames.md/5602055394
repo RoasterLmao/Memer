@@ -313,7 +313,7 @@ end
 
 function dropdown(Tab, title, options, default, flag, callback)
 	return Tab:CreateDropdown({
-		Name = "Dropdown Example",
+		Name = title,
 		Options = options,
 		CurrentOption = default,
 		Flag = flag,
