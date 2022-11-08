@@ -280,7 +280,7 @@ function notif(content)
 	if hideNotifications ~= nil and hideNotifications == true then
 		return
 	end
-	return Rayfield:Notify("Memer Hub", content)
+	return Rayfield:Notify("Memer Hub", {Title = "Memer Hub", Name = "Memer Hub", Content = content, Image = 0})
 end
 
 function button(Tab, title, callback)
