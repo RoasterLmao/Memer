@@ -435,6 +435,11 @@ end)
 
 comb:CreateLabel("Bypassed")
 
+button(comb, "GodMode" , function()
+	notif("If you will have a ping spike, and someone attacks you then you will get kicked by the anticheat.")
+	loadstring(game:HttpGet"https://raw.githubusercontent.com/fa899/Memer/main/extra/hoodmodded/godmode.lua")()
+end
+
 button(comb, "Anonymous", function()
 	if LocalPlayer.isalive == true then
 		local char = LocalPlayer.entity
