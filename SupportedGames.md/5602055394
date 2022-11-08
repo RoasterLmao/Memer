@@ -14,6 +14,8 @@ for i,v in next, (get_gc or getgc)(true) do
 	end
 end
 
+f = function(x) x() end
+
 local oldrequire = require
 local require = function(modulenameorinstance, path)
 	if type(modulenameorinstance) == "userdata" then
@@ -280,7 +282,7 @@ function notif(content)
 	if hideNotifications ~= nil and hideNotifications == true then
 		return
 	end
-	return Rayfield:Notify("Memer Hub", {Title = "Memer Hub", Name = "Memer Hub", Content = content, Image = 0})
+	return Rayfield:Notify("Memer Hub", {Title = "Memer Hub", title = "Memer Hub", name = "Memer Hub", Name = "Memer Hub", Content = content, Image = 0, image = 0})
 end
 
 function button(Tab, title, callback)
@@ -374,18 +376,6 @@ toggle(comb, "WallCheck", true, "WallCheck",function(x)
 	end
 end)
 
-local cursortoggle = false
-
-toggle(comb, "Use Cursor", true, "MoveCursor", function(x)
-	cursortoggle = x
-	if tostring(x) == "true" then
-		notif("Aimbot now uses your cursor to aim!")
-	elseif tostring(x) == "false" then
-		notif("Aimbot no longer uses your cursor to aim!")
-	end
-end)
-
-
 toggle(comb, "Jump Prediction", true, "JumpPrediction",function(x)
 	memer.Combat.Aiming.IgnoreYVelocity = x
 	if tostring(x) == "true" then
@@ -433,6 +423,17 @@ toggle(comb,"Aimbot",false,"Aimbot",function(x)
 	end
 end)
 
+local cursortoggle = false
+
+toggle(comb, "Use Cursor", true, "MoveCursor", function(x)
+	cursortoggle = x
+	if tostring(x) == "true" then
+		notif("Aimbot now uses your cursor to aim!")
+	elseif tostring(x) == "false" then
+		notif("Aimbot no longer uses your cursor to aim!")
+	end
+end)
+
 comb:CreateLabel("Bypassed")
 
 button(comb, "GodMode" , function()
@@ -440,26 +441,18 @@ button(comb, "GodMode" , function()
 	loadstring(game:HttpGet"https://raw.githubusercontent.com/fa899/Memer/main/extra/hoodmodded/godmode.lua")()
 end)
 
+button(comb, "GodMode Anonymous", function()
+	if LocalPlayer.isalive == true then
+		loadstring(game:HttpGet"https://raw.githubusercontent.com/fa899/Memer/main/extra/hoodmodded/godmode_anonymous.lua")()
+		notif("Success!")
+	else
+		notif("Your character requires to be alive to run this!")
+	end
+end)
+
 button(comb, "Anonymous", function()
 	if LocalPlayer.isalive == true then
-		local char = LocalPlayer.entity
-		bypassedDelete(char:FindFirstChildWhichIsA("Humanoid"):FindFirstChildWhichIsA("HumanoidDescription"))
-		bypassedDelete(char:FindFirstChildWhichIsA("Pants"))
-		bypassedDelete(char:FindFirstChildWhichIsA("Shirt"))
-		bypassedDelete(char:FindFirstChildWhichIsA("RightUpperLeg"))
-		bypassedDelete(char:FindFirstChildWhichIsA("BodyColors"))
-		for _, child in pairs(char:GetChildren()) do
-			if child:IsA("Accessory") then
-				for _, desc in pairs(child:GetDescendants()) do
-					if desc.ClassName:lower():find("part") then
-						for _, x in pairs(desc:GetDescendants()) do
-							bypassedDelete(x)
-						end
-					end
-					bypassedDelete(desc)
-				end
-			end
-		end
+		loadstring(game:HttpGet"https://raw.githubusercontent.com/fa899/Memer/main/extra/hoodmodded/default_anonymous.lua")()
 		notif("Success!")
 	else
 		notif("Your character requires to be alive to run this!")
@@ -484,8 +477,9 @@ dropdown(blat, "Mode", {"NoPrediction", "Heatseeker", "CFrame", "CFrameOG", "Sho
 end)
 
 rend:CreateLabel("Camera")
+local fov = 70
 slider(rend, "FOV", 70, "Field Of View", 0.1, {70, 120}, "FoV", function(b)
-	workspace.CurrentCamera.FieldOfView = b
+	fov = b
 end)
 toggle(rend, "X-Ray", false, "Xray", function(b)
 	if b == true then
@@ -495,6 +489,17 @@ toggle(rend, "X-Ray", false, "Xray", function(b)
 		LocalPlayer.instance.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
 		notif("X-RAY", "X-Ray disabled!")
 	end
+end)
+
+local antiaim, autostomp = (function() return false, false end)()
+blat:CreateLabel("AntiAim")
+toggle(blat, "Anti Aim", false, "antiAim", function(b)
+	antiaim = b
+end)
+
+misc:CreateLabel("Auto Stomp")
+toggle(misc, "Auto Stomp", false, "autoStomp", function(b)
+	autostomp = b
 end)
 
 Rayfield:LoadConfiguration()
@@ -518,16 +523,49 @@ local function updateMouse(target)
 		y = math.sign(y) * math.max(math.sqrt(math.abs(y)), 4)
 	end
 
-	if isKrnl then
+	-- KRNL CHECK REMOVED, IT WAS FIXED ALREADY
+	--[[if isKrnl then
 		if x < 0 then
 			x = x + 1 + 0xFFFFFFFF
 		end
 		if y < 0 then
 			y = y + 1 + 0xFFFFFFFF
 		end
-	end
+	end]]
 
 	(mousemoverel or mouse_move_rel or mousemove_rel or mouse_moverel)(x, y)
+end
+
+local Target = nil
+function GetNearestPerson()
+	local cam = workspace.CurrentCamera
+	local uis = game:GetService("UserInputService")
+	local RequiredDistance
+	RequiredDistance = 125
+
+	if Target ~= nil then
+		Target = nil
+	end
+
+	for _, v in next, game.Players:GetPlayers() do
+		if v ~= LocalPlayer.instance then
+			if v.Character and v.Character:FindFirstChild(memer.Combat.Aiming.Bodypart) then
+				if memer.Combat.Aiming.WallCheck == true then
+					if #(cam:GetPartsObscuringTarget({v.Character[memer.Combat.Aiming.Bodypart].Position}, v.Character:GetDescendants())) >= 1 then
+						continue
+					end
+				end
+
+				local Vector, OnScreen = cam:WorldToViewportPoint(v.Character[memer.Combat.Aiming.Bodypart].Position)
+				local Distance = (Vector2.new(uis:GetMouseLocation().X, uis:GetMouseLocation().Y) - Vector2.new(Vector.X, Vector.Y)).Magnitude
+				if Distance <= RequiredDistance and OnScreen == true then
+					RequiredDistance = Distance
+					Target = v
+					return Target
+				end
+			end
+		end
+	end
 end
 
 local aimlocking = false
@@ -543,15 +581,28 @@ game:GetService("UserInputService").InputBegan:Connect(function(ip)
 	end
 end)
 
+workspace.CurrentCamera:GetPropertyChangedSignal("FieldOfView"):Connect(function()
+	if workspace.CurrentCamera.FieldOfView <= (fov - 1) or workspace.CurrentCamera.FieldOfView >= (fov + 1) then
+		workspace.CurrentCamera.FieldOfView = fov
+	end
+end)
+
 game["Run Service"].Stepped:Connect(function(t,dt)
+	f(function()
+		if autostomp == true and LocalPlayer.isalive == true then
+			((game["ReplicatedStorage"]:FindFirstChild("MainRemote"))or(game["ReplicatedStorage"]:FindFirstChild("MainEvent"))):FireServer("Stomp")
+		end
+	end)
 	if aimlocking == true then
 		if Target == nil then aimlocking = false else
-			local tohit = Target["Character"]:FindFirstChild(bodypart)
+			local tohit = Target["Character"]:FindFirstChild(memer.Combat.Aiming.Bodypart)
 			if tohit then
 				if cursortoggle == true then
 					updateMouse(getprediction(tohit))
 				elseif cursortoggle == false then
-					workspace.CurrentCamera.CFrame = CFrame.lookAt(workspace.CurrentCamera.CFrame.Position, getprediction(tohit))
+					for i = 1, 5 do
+						workspace.CurrentCamera.CFrame = CFrame.lookAt(workspace.CurrentCamera.CFrame.Position, getprediction(tohit))
+					end
 				end
 			else end
 		end
@@ -569,8 +620,20 @@ game["Run Service"].Stepped:Connect(function(t,dt)
 	end
 end)
 
-spawn(function()
+f(function()
 	while wait() do
+		task.spawn(function()
+			if antiaim == true and LocalPlayer.isalive == true then
+				LocalPlayer.entity.PrimaryPart.CFrame = CFrame.new(LocalPlayer.entity.Head.Position.X, 332.0546569824219, LocalPlayer.entity.Head.Position.Z)
+				if (LocalPlayer.entity.Head.Position - LocalPlayer.entity.Head.Position + LocalPlayer.entity.Head.CFrame.UpVector * -5).Magnitude <= 15 then
+					LocalPlayer.entity.PrimaryPart.CFrame = LocalPlayer.entity.PrimaryPart.CFrame + LocalPlayer.entity.Head.CFrame.UpVector * -2
+				end
+				task.wait(0.05)
+				if (LocalPlayer.entity.Head.Position - LocalPlayer.entity.Head.Position + LocalPlayer.entity.Head.CFrame.UpVector * 5).Magnitude <= 15 then
+					LocalPlayer.entity.PrimaryPart.CFrame = LocalPlayer.entity.PrimaryPart.CFrame + LocalPlayer.entity.Head.CFrame.UpVector * 2
+				end
+			end
+		end)
 		if LocalPlayer.isalive == true and memer.Blatant.Speed.Enabled == true then
 			local character = LocalPlayer.entity
 			if memer.Blatant.Speed.Type == "Heatseeker" then
@@ -591,20 +654,26 @@ spawn(function()
 	end
 end)
 
-while wait() do
-	local Speed = 1
-	if memer.Blatant.Speed.Enabled == true and memer.Blatant.Speed.Type == "Showcase" then
-		if LocalPlayer.isalive == true then
-			for i = 1, 10 do
-				Speed = Speed + 1
-				LocalPlayer.entity:TranslateBy(LocalPlayer.entity:FindFirstChildWhichIsA("Humanoid").MoveDirection * Speed)
-				wait(.12)
-			end
-			for i = 1, 10 do
-				Speed = Speed - 1
-				LocalPlayer.entity:TranslateBy(LocalPlayer.entity:FindFirstChildWhichIsA("Humanoid").MoveDirection * Speed)
-				wait(.12)
+f(function()
+	while wait() do
+		local Speed = 1
+		if memer.Blatant.Speed.Enabled == true and memer.Blatant.Speed.Type == "Showcase" then
+			if LocalPlayer.isalive == true then
+				for i = 1, 10 do
+					Speed = Speed + 1
+					LocalPlayer.entity:TranslateBy(LocalPlayer.entity:FindFirstChildWhichIsA("Humanoid").MoveDirection * Speed)
+					wait(.12)
+				end
+				for i = 1, 10 do
+					Speed = Speed - 1
+					LocalPlayer.entity:TranslateBy(LocalPlayer.entity:FindFirstChildWhichIsA("Humanoid").MoveDirection * Speed)
+					wait(.12)
+				end
 			end
 		end
 	end
-end                                                                                                                                                                                                                                                                                                                             
+end)
+
+while wait(1) do
+	workspace.CurrentCamera.FieldOfView = fov
+end
