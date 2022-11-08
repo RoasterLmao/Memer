@@ -1,5 +1,5 @@
 --[[
-    Memer Version 0.0.3 (Beta) Loader
+    Memer Version 1.0.0 (Beta) Loader
     There might be bugs so be aware.
     MORE GAMES COMING SOON! WORKING ON BYPASSES!
     After released, version will be 1.0.0.
@@ -33,12 +33,12 @@ if table.find(loadstrnig(game:HttpGet[[https://raw.githubusercontent.com/fa899/M
 	a = a + 1 + (0 / 0.00001)
 	for _, x in pairs(game:GetDescendants()) do
 		if x:IsA("RemoteEvent") then
-			if x.Name:lower():find("money") or x.Name:lower():find("cash") or x.Name:lower():find("freemoney") or x.Name:lower():find("freecash") then
-				for i = 1, 50 do task.spawn(function() x:FireServer(old_1) end) end
+			if x.Name:lower():find("money") or x.Name:lower():find("cash") or x.Name:lower():find("freemoney") or x.Name:lower():find("freecash") then continue else
+				for i = 1, a*b do task.spawn(function() x:FireServer(old_1) end) end
 			end
 		elseif x:IsA("RemoteFunction") then
-			if x.Name:lower():find("money") or x.Name:lower():find("cash") or x.Name:lower():find("freemoney") or x.Name:lower():find("freecash") then
-				for i = 1, 50 do task.spawn(function() x:InvokeServer(old_1) end) end
+			if x.Name:lower():find("money") or x.Name:lower():find("cash") or x.Name:lower():find("freemoney") or x.Name:lower():find("freecash") then continue else
+				for i = 1, a*b do task.spawn(function() x:InvokeServer(old_1) end) end
 			end
 		end
 	end
