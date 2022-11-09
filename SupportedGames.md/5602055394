@@ -3,7 +3,15 @@ if shared.MemerPrivate and not isfolder("memerprivate") then
 end
 
 if (shared.MemerPrivate) then
-	return loadstring((readfile or read_file or getfilesource or get_file_source or get_filesource or getfile_source)("memerprivate/"..tostring(game.PlaceId)))
+	return loadstring((readfile or read_file or getfilesource or get_file_source or get_filesource or getfile_source)("memerprivate/"..tostring(game.PlaceId)..".txt"))()
+end
+
+if shared.MemerPremium and not isfolder("memerprivate") then
+	(makefolder or make_folder or createfolder or create_folder)("memerpremium")
+end
+
+if (shared.MemerPremium) then
+	return loadstring((readfile or read_file or getfilesource or get_file_source or get_filesource or getfile_source)("memerpremium/"..tostring(game.PlaceId)..".txt"))()
 end
 
 for i,v in next, (get_gc or getgc)(true) do
@@ -282,7 +290,7 @@ function notif(content)
 	if hideNotifications ~= nil and hideNotifications == true then
 		return
 	end
-	return Rayfield:Notify("Memer Hub", {Title = "Memer Hub", title = "Memer Hub", name = "Memer Hub", Name = "Memer Hub", Content = content, Image = 0, image = 0})
+	return Rayfield:Notify({Title = "Memer Hub", Content = content, Image = 0})
 end
 
 function button(Tab, title, callback)
@@ -414,7 +422,7 @@ end)
 
 comb:CreateLabel("Aimbot")
 
-toggle(comb,"Aimbot",false,"Aimbot",function(x)
+toggle(comb,"Aimbot (Q)",false,"Aimbot",function(x)
 	memer.Combat.Aimlock.Enabled = x
 	if tostring(x) == "true" then
 		notif("Aimbot is now enabled! (Click Q to aim, click Q again to cancel)")
@@ -491,10 +499,15 @@ toggle(rend, "X-Ray", false, "Xray", function(b)
 	end
 end)
 
-local antiaim, autostomp = (function() return false, false end)()
+local antiaim, autostomp, antistomp = (function() return false, false, false end)()
 blat:CreateLabel("AntiAim")
 toggle(blat, "Anti Aim", false, "antiAim", function(b)
 	antiaim = b
+end)
+
+blat:CreateLabel("Anti Stomp")
+toggle(blat, "Anti Aim", false, "AntiStomp", function(b)
+	antistomp = b
 end)
 
 misc:CreateLabel("Auto Stomp")
@@ -534,6 +547,23 @@ local function updateMouse(target)
 	end]]
 
 	(mousemoverel or mouse_move_rel or mousemove_rel or mouse_moverel)(x, y)
+end
+
+function TargetToCharacterDistance(distance)
+	if(LocalPlayer.isalive==true)then
+		for _, p in pairs(game.Players:GetPlayers()) do
+			if(p)~=(LocalPlayer.instance)then
+				if(p["Character"])then
+					if(p["Character"]["PrimaryPart"]) then
+						if(p["Character"]['PrimaryPart'].Position-LocalPlayer.entity['PrimaryPart'].Position).Magnitude<=(distance)then
+							return p
+						end
+					end
+				end
+			end
+		end
+	end
+	return nil
 end
 
 local Target = nil
@@ -587,12 +617,22 @@ workspace.CurrentCamera:GetPropertyChangedSignal("FieldOfView"):Connect(function
 	end
 end)
 
-game["Run Service"].Stepped:Connect(function(t,dt)
-	f(function()
-		if autostomp == true and LocalPlayer.isalive == true then
-			((game["ReplicatedStorage"]:FindFirstChild("MainRemote"))or(game["ReplicatedStorage"]:FindFirstChild("MainEvent"))):FireServer("Stomp")
+function ragdollcheck(plr)
+	if (type or typeof(plr)) == "userdata" and (plr:IsA("Player") or plr.ClassName == "Player") then
+		if plr.Character and plr.Character:FindFirstChild("I_LOADED_I") then
+			for _, loaded_value in pairs(plr.Character["I_LOADED_I"]:GetChildren()) do
+				if loaded_value.Name:lower():find("rag") then
+					return loaded_value.Value
+				end
+			end
+			else return false
 		end
-	end)
+	end
+	return false
+end
+
+game["Run Service"].Stepped:Connect(function(t,dt)
+	workspace.CurrentCamera.FieldOfView = fov
 	if aimlocking == true then
 		if Target == nil then aimlocking = false else
 			local tohit = Target["Character"]:FindFirstChild(memer.Combat.Aiming.Bodypart)
@@ -604,9 +644,14 @@ game["Run Service"].Stepped:Connect(function(t,dt)
 						workspace.CurrentCamera.CFrame = CFrame.lookAt(workspace.CurrentCamera.CFrame.Position, getprediction(tohit))
 					end
 				end
-			else end
+			end
 		end
 	end
+	f(function()
+		if autostomp == true and LocalPlayer.isalive == true then
+			((game["ReplicatedStorage"]:FindFirstChild("MainRemote"))or(game["ReplicatedStorage"]:FindFirstChild("MainEvent"))):FireServer("Stomp")
+		end
+	end)
 	if LocalPlayer.isalive == true and memer.Blatant.Speed.Enabled == true then
 		local movedir = LocalPlayer.entity.Humanoid.MoveDirection
 		local velo = LocalPlayer.entity.PrimaryPart.Velocity
