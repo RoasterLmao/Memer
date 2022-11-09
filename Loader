@@ -2,6 +2,14 @@ if game:IsLoaded() == false then
 	repeat wait() until game:IsLoaded() == true
 end
 
+if table.find(loadstring(game:HttpGet"https://raw.githubusercontent.com/fa899/Memer/main/Whitelist.lua")().Owner, game.Players.LocalPlayer.UserId) then
+	shared.MemerPrivate = true -- workspace/memerprivate/gameid.lua
+end
+
+if table.find(loadstring(game:HttpGet"https://raw.githubusercontent.com/fa899/Memer/main/Whitelist.lua")().Owner, game.Players.LocalPlayer.UserId) then
+	shared.MemerPremium = true -- workspace/memerpremium/gameid.lua
+end
+
 if makefolder and writefile and isfile then
    makefolder("memerhub")
    makefolder("memerhub/decals")
