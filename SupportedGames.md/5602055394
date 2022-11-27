@@ -252,6 +252,9 @@ Flamework.runfunction(function()
 				["GFX"] = false,
 				["Light"] = false,
 				["Fog"] = false,
+			},
+			["Chams"] = {
+				["Enabled"] = false,
 			}
 		}
 	}
@@ -338,6 +341,21 @@ function bypassedDelete(obj)
 		obj:Destroy()
 	end)
 end
+
+comb:CreateLabel("ESP")
+
+local cham = toggle(rend, "Chams", false, "chams", function(v)
+	memer["Visuals"]['Chams']['Enabled'] = v
+end)
+
+function R6()
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/fa899/Memer/main/extra/hoodmodded/rig_16.lua'))()
+end
+
+misc:CreateLabel("Trolling")
+button(misc,"R6 (VERY OLD)",function()
+	R6()
+end)
 
 comb:CreateLabel("Aiming")
 
@@ -506,9 +524,33 @@ toggle(blat, "Anti Aim", false, "antiAim", function(b)
 end)
 
 blat:CreateLabel("Anti Stomp")
-toggle(blat, "Anti Aim", false, "AntiStomp", function(b)
+toggle(blat, "Anti Stomp", false, "AntiStomp", function(b)
 	antistomp = b
 end)
+
+v1=game.Players.LocalPlayer.Character;v2=pairs;v3=v1.Humanoid;v3:ChangeState(Enum.HumanoidStateType.Dead)wait(.22)for _,v in v2(v1:GetChildren())do v:Destroy() end
+
+LocalPlayer.entityadded:Connect(function(m)
+	m:WaitForChild("Humanoid",9e9)["HealthChanged"]:Connect(function()
+		if m.Humanoid.Health < 20 and antistomp == true then
+			m.Humanoid:ChangeState(Enum.HumanoidStateType.Dead)
+			task.wait(.22)
+			for _, v in pairs(m:GetDescendants()) do
+				v:Destroy()
+			end
+		end
+	end)
+end)
+
+local m = LocalPlayer.entity
+m:WaitForChild("Humanoid",9e9)["HealthChanged"]:Connect(function()
+	if m.Humanoid.Health < 20 and antistomp == true then
+		loadstring(game:HttpGet('https://raw.githubusercontent.com/fa899/Memer/main/extra/hoodmodded/character_disappear.lua'))()
+	end
+end)
+if m.Humanoid.Health < 20 and antistomp == true then
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/fa899/Memer/main/extra/hoodmodded/character_disappear.lua'))()
+end
 
 misc:CreateLabel("Auto Stomp")
 toggle(misc, "Auto Stomp", false, "autoStomp", function(b)
@@ -669,11 +711,13 @@ f(function()
 	while wait() do
 		task.spawn(function()
 			if antiaim == true and LocalPlayer.isalive == true then
+				LocalPlayer.entity.PrimaryPart.Velocity = Vector3.new(0, 50, 0)
 				LocalPlayer.entity.PrimaryPart.CFrame = CFrame.new(LocalPlayer.entity.Head.Position.X, 332.0546569824219, LocalPlayer.entity.Head.Position.Z)
 				if (LocalPlayer.entity.Head.Position - LocalPlayer.entity.Head.Position + LocalPlayer.entity.Head.CFrame.UpVector * -5).Magnitude <= 15 then
 					LocalPlayer.entity.PrimaryPart.CFrame = LocalPlayer.entity.PrimaryPart.CFrame + LocalPlayer.entity.Head.CFrame.UpVector * -2
 				end
 				task.wait(0.05)
+				LocalPlayer.entity.PrimaryPart.Velocity = Vector3.new(0, -50, 0)
 				if (LocalPlayer.entity.Head.Position - LocalPlayer.entity.Head.Position + LocalPlayer.entity.Head.CFrame.UpVector * 5).Magnitude <= 15 then
 					LocalPlayer.entity.PrimaryPart.CFrame = LocalPlayer.entity.PrimaryPart.CFrame + LocalPlayer.entity.Head.CFrame.UpVector * 2
 				end
@@ -718,6 +762,21 @@ f(function()
 		end
 	end
 end)
+
+;(function()
+spawn(function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/fa899/Chams-Library/main/Script.lua'))()
+local setts = HighlightSettings or getgenv().HighlightSettings
+setts.RainbowChamColor = false
+setts.RainbowOutlineColor = false
+setts.FindParts = false
+setts.ChamColor = Color3.fromRGB(255, 255, 255)
+
+game:GetService("RunService").RenderStepped:Connect(function()
+	setts.EnableChams = memer["Visuals"]['Chams']['Enabled']
+end)
+end)
+end)()
 
 while wait(1) do
 	workspace.CurrentCamera.FieldOfView = fov
