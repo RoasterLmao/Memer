@@ -342,7 +342,7 @@ function bypassedDelete(obj)
 	end)
 end
 
-comb:CreateLabel("ESP")
+rend:CreateLabel("ESP")
 
 local cham = toggle(rend, "Chams", false, "chams", function(v)
 	memer["Visuals"]['Chams']['Enabled'] = v
