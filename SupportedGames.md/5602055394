@@ -739,24 +739,20 @@ f(function()
 			elseif memer.Blatant.Speed.Type == "NoPrediction" then
 				character:TranslateBy(character.Humanoid.MoveDirection*(math.random(-1,5)+(memer.Blatant.Speed.Speed-1)))
 			end
-		end
-	end
-end)
-
-f(function()
-	while wait() do
-		local Speed = 1
-		if memer.Blatant.Speed.Enabled == true and memer.Blatant.Speed.Type == "Showcase" then
-			if LocalPlayer.isalive == true then
-				for i = 1, 10 do
-					Speed = Speed + 1
-					LocalPlayer.entity:TranslateBy(LocalPlayer.entity:FindFirstChildWhichIsA("Humanoid").MoveDirection * Speed)
-					wait(.12)
-				end
-				for i = 1, 10 do
-					Speed = Speed - 1
-					LocalPlayer.entity:TranslateBy(LocalPlayer.entity:FindFirstChildWhichIsA("Humanoid").MoveDirection * Speed)
-					wait(.12)
+			elseif memer.Blatant.Speed.Type == "Showcase" then
+			local Speed = 1
+			if memer.Blatant.Speed.Enabled == true and memer.Blatant.Speed.Type == "Showcase" then
+				if LocalPlayer.isalive == true then
+					for i = 1, 10 do
+						Speed = Speed + 1
+						LocalPlayer.entity:TranslateBy(LocalPlayer.entity:FindFirstChildWhichIsA("Humanoid").MoveDirection * Speed)
+						wait(.12)
+					end
+					for i = 1, 10 do
+						Speed = Speed - 1
+						LocalPlayer.entity:TranslateBy(LocalPlayer.entity:FindFirstChildWhichIsA("Humanoid").MoveDirection * Speed)
+						wait(.12)
+					end
 				end
 			end
 		end
