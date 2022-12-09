@@ -364,7 +364,7 @@ dropdown(comb, "Body Part", {"Head", "HumanoidRootPart", "UpperTorso", "LowerTor
 	notif("Aimbot now aims for "..b.."!")
 end)
 
-slider(comb, "Prediction", 1, "", 1, {1, 8}, "Prediction", function(value)
+slider(comb, "Prediction", 1, "", 1, {1, 9}, "Prediction", function(value)
 	if value == 1 then
 		memer.Combat.Aiming.Prediction = 0.33
 	elseif value == 2 then
@@ -381,10 +381,12 @@ slider(comb, "Prediction", 1, "", 1, {1, 8}, "Prediction", function(value)
 		memer.Combat.Aiming.Prediction = 0.130169
 	elseif value == 8 then
 		memer.Combat.Aiming.Prediction = 0.135699
+	elseif value == 9 then
+		memer.Combat.Aiming.Prediction = 0.142458
 	end
 end)
 
-toggle(comb, "AutoPredict", false, "AutomaticPrediction",function(x)
+toggle(comb, "AutoPredict", true, "AutomaticPrediction",function(x)
 	memer.Combat.Aiming.AutoPredict = x
 	if tostring(x) == "true" then
 		notif("Memer hub now automically predicts!")
@@ -440,6 +442,8 @@ game:GetService("RunService")["Stepped"]:Connect(function(t,dt)
 			memer.Combat.Aiming.Prediction = 0.140552
 		elseif ping > 150 then
 			memer.Combat.Aiming.Prediction = 0.140576
+		elseif ping > 160 then
+			memer.Combat.Aiming.Prediction = 0.142458
 		end
 	end
 end)
@@ -533,8 +537,6 @@ blat:CreateLabel("Anti Stomp")
 toggle(blat, "Anti Stomp", false, "AntiStomp", function(b)
 	antistomp = b
 end)
-
-v1=game.Players.LocalPlayer.Character;v2=pairs;v3=v1.Humanoid;v3:ChangeState(Enum.HumanoidStateType.Dead)wait(.22)for _,v in v2(v1:GetChildren())do v:Destroy() end
 
 LocalPlayer.entityadded:Connect(function(m)
 	m:WaitForChild("Humanoid",9e9)["HealthChanged"]:Connect(function()
