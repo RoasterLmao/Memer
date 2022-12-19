@@ -1,3 +1,5 @@
+local canspeed = true
+
 if shared.MemerPrivate and not isfolder("memerprivate") then
 	(makefolder or make_folder or createfolder or create_folder)("memerprivate")
 end
@@ -186,6 +188,8 @@ end)
 
 local memer, getfuncs, run
 
+storage = { GetStrafeAngle = 0, DesyncAngle = 0 }
+
 Flamework.runfunction(function()
 	run = function()
 		task.spawn(function()
@@ -196,6 +200,22 @@ Flamework.runfunction(function()
 		end)
 	end
 	memer = {
+		["storage"] = { GetStrafeAngle = 0 },
+		["functions"] = {
+			TargetStrafe = function(speed, distance, enemy)
+				if storage.GetStrafeAngle > 360 then
+					storage.GetStrafeAngle = 0
+				else
+					storage.GetStrafeAngle = storage.GetStrafeAngle + speed
+				end
+				if (enemy.Position - LocalPlayer.entity.PrimaryPart.Position).Magnitude < 25 then
+					canspeed = false
+					LocalPlayer.entity.PrimaryPart.CFrame = enemy.CFrame * CFrame.Angles(0, math.rad(storage.GetStrafeAngle), 0) * CFrame.new(0, 0, distance)
+				else
+					canspeed = true
+				end
+			end
+		},
 		["Framework"] = LocalPlayer.instance.PlayerGui:FindFirstChildWhichIsA("LocalScript"),
 		["Combat"] = {
 			["Aiming"] = {
@@ -208,6 +228,7 @@ Flamework.runfunction(function()
 			["Aimlock"] = {
 				["Enabled"] = false,
 				["MoveCursor"] = false,
+				["TargetStrafe"] = false,
 			},
 			["AutoStomp"] = {
 				["Enabled"] = false,
@@ -459,6 +480,26 @@ toggle(comb,"Aimbot (Q)",false,"Aimbot",function(x)
 	end
 end)
 
+
+local strafspeed,strafdist = 8, 6
+
+toggle(comb,"Target Strafe",false,"Strafe",function(x)
+	memer.Combat.Aimlock.TargetStrafe = x
+	if tostring(x) == "true" then
+		notif("You will now strafe the target!")
+	else
+		notif("You will no longer annoy the target!")
+	end
+end)
+
+slider(comb, "Target Strafe Distance", 6, "Distance", 1, {1, 15}, "StrafeDistance", function(x)
+	strafdist = x
+end)
+
+slider(comb, "Target Strafe Speed", 8, "Distance", 1, {1, 30}, "StrafeDistance", function(x)
+	strafspeed = x
+end)
+
 local cursortoggle = false
 
 toggle(comb, "Use Cursor", true, "MoveCursor", function(x)
@@ -675,8 +716,13 @@ game["Run Service"].Stepped:Connect(function(t,dt)
 	workspace.CurrentCamera.FieldOfView = fov
 	if aimlocking == true then
 		if Target == nil then aimlocking = false else
-			local tohit = Target["Character"]:FindFirstChild(memer.Combat.Aiming.Bodypart)
-			if tohit then
+				local tohit = Target["Character"]:FindFirstChild(memer.Combat.Aiming.Bodypart)
+				if tohit then
+				if Target and Target['Character'] ~= nil and Target['Character']:FindFirstChild("LowerTorso") and LocalPlayer.entity ~= nil and LocalPlayer.entity.PrimaryPart ~= nil and ragdollcheck(Target) == false and ragdollcheck(LocalPlayer['instance']) == false and memer.Combat.Aimlock.Enabled == true and memer.Combat.Aimlock.TargetStrafe == true then
+					if (Target["Character"]["LowerTorso"].Position - Target["Character"]["LowerTorso"].Position).Magnitude < 32 then
+						memer.functions.TargetStrafe(strafspeed, strafdist, Target.Character.PrimaryPart)
+					end
+				end
 				if cursortoggle == true then
 					updateMouse(getprediction(tohit))
 				elseif cursortoggle == false then
@@ -707,55 +753,57 @@ end)
 
 f(function()
 	spawn(function()
-	while wait() do
-		task.spawn(function()
-			if antiaim == true and LocalPlayer.isalive == true then
-				LocalPlayer.entity.PrimaryPart.Velocity = Vector3.new(0, 50, 0)
-				LocalPlayer.entity.PrimaryPart.CFrame = CFrame.new(LocalPlayer.entity.Head.Position.X, 332.0546569824219, LocalPlayer.entity.Head.Position.Z)
-				if (LocalPlayer.entity.Head.Position - LocalPlayer.entity.Head.Position + LocalPlayer.entity.Head.CFrame.UpVector * -5).Magnitude <= 15 then
-					LocalPlayer.entity.PrimaryPart.CFrame = LocalPlayer.entity.PrimaryPart.CFrame + LocalPlayer.entity.Head.CFrame.UpVector * -2
-				end
-				task.wait(0.05)
-				LocalPlayer.entity.PrimaryPart.Velocity = Vector3.new(0, -50, 0)
-				if (LocalPlayer.entity.Head.Position - LocalPlayer.entity.Head.Position + LocalPlayer.entity.Head.CFrame.UpVector * 5).Magnitude <= 15 then
-					LocalPlayer.entity.PrimaryPart.CFrame = LocalPlayer.entity.PrimaryPart.CFrame + LocalPlayer.entity.Head.CFrame.UpVector * 2
-				end
-			end
-		end)
-		if LocalPlayer.isalive == true and memer.Blatant.Speed.Enabled == true then
-			local character = LocalPlayer.entity
-			if memer.Blatant.Speed.Type == "Heatseeker" then
-				for i = 1, 4 do
-					task.wait(0.01)
-					local COUNT = (memer.Blatant.Speed.Speed > 9) and 8 or memer.Blatant.Speed.Speed
-					character:TranslateBy(character.Humanoid.MoveDirection*(COUNT+(i-0.5)))
-				end
-				for i = 4, 0, -1 do
-					task.wait(0.01)
-					local COUNT = (memer.Blatant.Speed.Speed > 9) and 8 or memer.Blatant.Speed.Speed
-					character:TranslateBy(character.Humanoid.MoveDirection*(COUNT+(i-0.5)))
-				end
-			elseif memer.Blatant.Speed.Type == "NoPrediction" then
-				character:TranslateBy(character.Humanoid.MoveDirection*(math.random(-1,5)+(memer.Blatant.Speed.Speed-1)))
-			end
-			elseif memer.Blatant.Speed.Type == "Showcase" then
-			local Speed = 1
-			if memer.Blatant.Speed.Enabled == true and memer.Blatant.Speed.Type == "Showcase" then
-				if LocalPlayer.isalive == true then
-					for i = 1, 10 do
-						Speed = Speed + 1
-						LocalPlayer.entity:TranslateBy(LocalPlayer.entity:FindFirstChildWhichIsA("Humanoid").MoveDirection * Speed)
-						wait(.12)
+		while wait() do
+			task.spawn(function()
+				if antiaim == true and LocalPlayer.isalive == true then
+					LocalPlayer.entity.PrimaryPart.Velocity = Vector3.new(0, 50, 0)
+					LocalPlayer.entity.PrimaryPart.CFrame = CFrame.new(LocalPlayer.entity.Head.Position.X, 332.0546569824219, LocalPlayer.entity.Head.Position.Z)
+					if (LocalPlayer.entity.Head.Position - LocalPlayer.entity.Head.Position + LocalPlayer.entity.Head.CFrame.UpVector * -5).Magnitude <= 15 then
+						LocalPlayer.entity.PrimaryPart.CFrame = LocalPlayer.entity.PrimaryPart.CFrame + LocalPlayer.entity.Head.CFrame.UpVector * -2
 					end
-					for i = 1, 10 do
-						Speed = Speed - 1
-						LocalPlayer.entity:TranslateBy(LocalPlayer.entity:FindFirstChildWhichIsA("Humanoid").MoveDirection * Speed)
-						wait(.12)
+					task.wait(0.05)
+					LocalPlayer.entity.PrimaryPart.Velocity = Vector3.new(0, -50, 0)
+					if (LocalPlayer.entity.Head.Position - LocalPlayer.entity.Head.Position + LocalPlayer.entity.Head.CFrame.UpVector * 5).Magnitude <= 15 then
+						LocalPlayer.entity.PrimaryPart.CFrame = LocalPlayer.entity.PrimaryPart.CFrame + LocalPlayer.entity.Head.CFrame.UpVector * 2
+					end
+				end
+			end)
+			if LocalPlayer.isalive == true and memer.Blatant.Speed.Enabled == true then
+				local character = LocalPlayer.entity
+				if canspeed == true then
+					if memer.Blatant.Speed.Type == "Heatseeker" then
+						for i = 1, 4 do
+							task.wait(0.01)
+							local COUNT = (memer.Blatant.Speed.Speed > 9) and 8 or memer.Blatant.Speed.Speed
+							character:TranslateBy(character.Humanoid.MoveDirection*(COUNT+(i-0.5)))
+						end
+						for i = 4, 0, -1 do
+							task.wait(0.01)
+							local COUNT = (memer.Blatant.Speed.Speed > 9) and 8 or memer.Blatant.Speed.Speed
+							character:TranslateBy(character.Humanoid.MoveDirection*(COUNT+(i-0.5)))
+						end
+					elseif memer.Blatant.Speed.Type == "NoPrediction" then
+						character:TranslateBy(character.Humanoid.MoveDirection*(math.random(-1,5)+(memer.Blatant.Speed.Speed-1)))
+					end
+				elseif memer.Blatant.Speed.Type == "Showcase" then
+					local Speed = 1
+					if memer.Blatant.Speed.Enabled == true and memer.Blatant.Speed.Type == "Showcase" then
+						if LocalPlayer.isalive == true then
+							for i = 1, 10 do
+								Speed = Speed + 1
+								LocalPlayer.entity:TranslateBy(LocalPlayer.entity:FindFirstChildWhichIsA("Humanoid").MoveDirection * Speed)
+								wait(.12)
+							end
+							for i = 1, 10 do
+								Speed = Speed - 1
+								LocalPlayer.entity:TranslateBy(LocalPlayer.entity:FindFirstChildWhichIsA("Humanoid").MoveDirection * Speed)
+								wait(.12)
+							end
+						end
 					end
 				end
 			end
 		end
-	end
 	end)
 end)
 
